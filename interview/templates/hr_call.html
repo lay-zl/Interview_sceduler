@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hr Call</title>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const alerts = document.querySelectorAll('.alert');
+
+            alerts.forEach(alert => {
+                // Close alert when clicking the close button
+                alert.querySelector('.close').addEventListener('click', function() {
+                    alert.style.display = 'none';
+                });
+
+                // Automatically close alert after 5 seconds
+                setTimeout(function() {
+                    alert.style.display = 'none';
+                }, 5000);
+            });
+        });
+    </script>
+
+    <style>
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            position: relative;
+            transition: opacity 0.5s ease;
+        }
+        .alert-success {
+            color: #155724;
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+        .alert-info {
+            color: #0c5460;
+            background-color: #d1ecf1;
+            border-color: #bee5eb;
+        }
+        .alert-danger {
+            color: #721c24;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+        .alert .close {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            cursor: pointer;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .table-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        .table-buttons a {
+            display: inline-block;
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        .table-buttons a:hover {
+            background-color: #0056b3;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+        }
+        table th, table td {
+            padding: 12px 15px; /* Consistent padding for better alignment */
+            text-align: left;
+            border: 1px solid #ddd; /* Add borders for better structure */
+        }
+        table th {
+            background-color: #343a40;
+            color: #fff;
+            text-align: center; /* Center align the table headers */
+        }
+        table td {
+            background-color: #fff; /* Ensure table body cells have a white background */
+            vertical-align: middle; /* Vertically center the content */
+        }
+        table th:first-child, table td:first-child {
+            text-align: center; /* Center align the "Sr. No" column */
+            width: 5%; /* Set a fixed width for the "Sr. No" column */
+        }
+        table th:nth-child(2), table td:nth-child(2) {
+            width: 20%; /* Adjust width for the "HR Name" column */
+        }
+        table th:nth-child(3), table td:nth-child(3) {
+            width: 20%; /* Adjust width for the "HR Contact Number" column */
+        }
+        table th:nth-child(4), table td:nth-child(4) {
+            width: 20%; /* Adjust width for the "Company Name" column */
+        }
+        table th:nth-child(5), table td:nth-child(5) {
+            width: 10%; /* Adjust width for the "Date" column */
+        }
+        table th:nth-child(6), table td:nth-child(6) {
+            width: 15%; /* Adjust width for the "Discussion" column */
+        }
+        table th:last-child, table td:last-child {
+            text-align: center; /* Center align the "Action" column */
+            width: 10%; /* Set a fixed width for the "Action" column */
+        }
+        table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        table tr:nth-child(odd) {
+            background-color: #e9ecef;
+        }
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        .action-buttons a {
+            display: inline-block;
+            background-color: #28a745; /* Green for Edit */
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 3px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+        .action-buttons a.delete {
+            background-color: #dc3545; /* Red for Delete */
+        }
+        .action-buttons a:hover {
+            opacity: 0.8;
+        }
+    </style>
+
+</head>
+<body>
+
+    {% if messages %}
+        <div>
+            {% for message in messages %}
+                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %}">
+                    <span class="close">&times;</span>
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <center>
+        <h2>Call With HR</h2>
+    </center>
+
+    <div class="table-buttons">
+        <a href="{% url 'home' %}">Home Page</a>
+        <a href="{% url 'with_hr_entry' %}">Add Entry</a>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Sr. No</th>
+                <th scope="col">HR Name</th>
+                <th scope="col">HR Contact Number</th>
+                <th scope="col">Company Name</th>
+                <th scope="col">Date</th>
+                <th scope="col">Discussion</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in data %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ i.name }}</td>
+                <td>{{ i.mob }}</td>
+                <td>{{ i.compnay }}</td>
+                <td>{{  i.date|date:"d F Y"  }}</td>
+                <td>{{ i.description }}</td>
+                <td>
+                    <div class="action-buttons">
+                        <a href="{% url 'edit_hr_entry' i.id %}">Edit</a>
+                        <a href="{% url 'delete_hr_entry' i.id %}" class="delete" onclick="return confirm('Do you really want to delete this interview?');">Delete</a>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html>

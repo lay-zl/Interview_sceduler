@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            margin-top: 90px;
+        }
+        .alert-space {
+            height: 60px; /* Reserve space for alerts */
+            margin-bottom: 20px;
+        }
+        table {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        th, td {
+            text-align: center;
+            padding: 12px;
+            vertical-align: middle;
+        }
+        thead {
+            background-color: #343a40;
+            color: #fff;
+        }
+        tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tbody tr:hover {
+            background-color: #e9ecef;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .no-data {
+            text-align: center;
+            font-style: italic;
+        }
+        .alert {
+            position: relative;
+            padding-right: 50px; /* Space for the close button */
+            margin-bottom: 20px;
+        }
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+        .button-container {
+            margin-bottom: 20px;
+        }
+        .button-container a {
+            display: inline-block;
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        .header-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const alerts = document.querySelectorAll('.alert');
+
+            alerts.forEach(alert => {
+                // Close alert when clicking the close button
+                alert.querySelector('.close').addEventListener('click', function() {
+                    alert.style.display = 'none';
+                });
+
+                // Automatically close alert after 5 seconds
+                setTimeout(function() {
+                    alert.style.display = 'none';
+                }, 5000);
+            });
+        });
+    </script>
+</head>
+<body>
+
+<div class="container">
+    {% if messages %}
+        <div>
+            {% for message in messages %}
+                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %}">
+                    <span class="close">&times;</span>
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+<center>
+<h2>Your Latest Interview</h2></center>
+    <div class="header-actions mb-4">
+        <h1 class="my-4">Interview Data</h1>
+        <div class="button-container">
+            <a href="{% url 'all_data' %}">View All Interview Data</a>
+        </div>
+    </div>
+
+    <div class="mb-4">
+        <a href="{% url 'add_interview' %}" class="btn btn-primary">Add Interview Details</a>
+        <a href="{% url 'with_hr' %}" class="btn btn-secondary ml-2">Discuss with HR</a>
+    </div>
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Sr.No.</th>
+                <th scope="col">Company Name</th>
+                <th scope="col">Interview Date</th>
+                <th scope="col">Interview Time</th>
+                <th scope="col">Round</th>
+                <th scope="col">HR Name</th>
+                <th scope="col">HR Contact Number</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in data %}
+            <tr onclick="window.location.href='{% url 'interview_detail' i.id %}'" style="cursor: pointer;">
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ i.company }}</td>
+                <td>{{ i.date|date:"d F Y" }}</td>
+                <td>{{ i.time }}</td>
+                <td>{{ i.round }}</td>
+                <td>{{ i.hr_name }}</td>
+                <td>{{ i.hr_contact }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7" class="no-data">No data available</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

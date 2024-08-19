@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interview Detail</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            margin-top: 30px;
+        }
+        .detail-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            position: relative;
+        }
+        .header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .btn-home {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        .comment-section {
+            position: relative;
+            padding-bottom: 60px; /* Space for the buttons */
+        }
+        .action-buttons {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            gap: 10px;
+        }
+        .btn-custom {
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .btn-edit {
+            background-color: #28a745;
+            color: #fff;
+        }
+        .btn-delete {
+            background-color: #dc3545;
+            color: #fff;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const alerts = document.querySelectorAll('.alert');
+
+            alerts.forEach(alert => {
+                // Close alert when clicking the close button
+                alert.querySelector('.close').addEventListener('click', function() {
+                    alert.style.display = 'none';
+                });
+
+                // Automatically close alert after 5 seconds
+                setTimeout(function() {
+                    alert.style.display = 'none';
+                }, 5000);
+            });
+        });
+    </script>
+</head>
+<body>
+
+{% if messages %}
+    <div>
+        {% for message in messages %}
+            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %}">
+                <span class="close">&times;</span>
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+<div class="container">
+    <div class="detail-card">
+        <!-- Header Section -->
+        <div class="header-section">
+            <h1>Interview Details</h1>
+            <a href="{% url 'home' %}" class="btn-home">Home Page</a>
+        </div>
+
+        <p><strong>Company Name:</strong> {{ data.company }}</p>
+        <p><strong>Date:</strong> {{ data.date|date:"d F Y" }}</p>
+        <p><strong>Time:</strong> {{ data.time }}</p>
+        <p><strong>Round:</strong> {{ data.round }}</p>
+        <p><strong>HR Name:</strong> {{ data.hr_name }}</p>
+        <p><strong>HR Contact Number:</strong> {{ data.hr_contact }}</p>
+        <p><strong>Result:</strong> {% if data.result %} {{ data.result }}{% else %}N/A{% endif %}</p>
+        <p><strong>Company Size:</strong> {{ data.size }}</p>
+        <p><strong>Company URL:</strong> {% if data.url %}<a href="{{ data.url }}" target="_blank">{{ data.url }}</a>{% else %}N/A{% endif %}</p>
+        <p><strong>LinkedIn URL:</strong> {% if data.linkdin %}<a href="{{ data.linkdin }}" target="_blank">{{ data.linkdin }}</a>{% else %}N/A{% endif %}</p>
+
+        <!-- Comment Section -->
+        <div class="comment-section">
+            <p><strong>Comments:</strong> {% if data.comment %}{{ data.comment }}{% else %}N/A{% endif %}</p>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <a href="{% url 'edit' data.id %}" class="btn-custom btn-edit">Edit</a>
+                <a href="{% url 'delete' data.id %}" class="btn-custom btn-delete" onclick="return confirm('Do you really want to delete this interview?');">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

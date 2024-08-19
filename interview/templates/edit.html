@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Untitled</title>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+      <style>
+        .message {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 16px;
+        }
+
+        .success {
+            background-color: #28a745; /* Green color */
+        }
+
+        .error {
+            background-color: #dc3545; /* Red color */
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div id="login">
+        <h3 class="text-center text-white pt-5">Add Interview form</h3>
+        <div class="container">
+            <center>
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li class="message {% if message.tags %}{{ message.tags }}{% endif %}">
+                    {{ message }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</center>
+            <div id="login-row" class="row justify-content-center align-items-center">
+                <div id="login-column" class="col-md-6">
+                    <div id="login-box" class="col-md-12">
+                        <form id="login-form" class="form" action="" method="post">
+                            {% csrf_token %}
+                            <h3 class="text-center text-info">Edit Details</h3>
+                            <div class="form-group">
+                                <label  class="text-info">Company Name:</label><br>
+                                {{form.company}}
+                            </div>
+
+                            <div class="form-group">
+                                <label  class="text-info">Date:</label><br>
+                                {{ form.date }}
+                            </div>
+
+                            <div class="form-group">
+                                <label  class="text-info">Time:</label><br>
+                                {{ form.time }}
+                            </div>
+
+                            <div class="form-group">
+                                <label  class="text-info">Round:</label><br>
+                                {{ form.round }}
+                            </div>
+
+                            <div class="form-group">
+                                <label  class="text-info">Hr Name:</label><br>
+                                {{ form.hr_name }}
+                            </div>
+
+                            <div class="form-group">
+                                <label  class="text-info">Hr Contact Number:</label><br>
+                                {{ form.hr_contact }}
+                            </div>
+
+                            <div class="form-group">
+                                <label  class="text-info">Result:</label><br>
+                                {{ form.result }}
+                            </div>
+
+                            <div class="form-group">
+                                <label  class="text-info">Company Size:</label><br>
+                                {{ form.size }}
+                            </div>
+
+                            <div class="form-group">
+                                <label  class="text-info">URL of Comapny:</label><br>
+                                {{ form.url }}
+                            </div>
+
+                            <div class="form-group">
+                                <label  class="text-info">LinkDin Url:</label><br>
+                                {{ form.linkdin }}
+                            </div>
+
+                            <div class="form-group">
+                                <label  class="text-info">Comments/Improvment need :</label><br>
+                                {{ form.comment }}
+                            </div>
+
+                            <div class="form-group">
+
+                                <input type="submit" name="submit" class="btn btn-info btn-md" value="submit">
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+
+</html>

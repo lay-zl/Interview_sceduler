@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Your existing styles */
+        .discuss-hr-btn {
+            display: inline-block;
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        .home-btn {
+            display: inline-block;
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Listen for changes in the date input field
+            $('#search-date').on('change', function() {
+                var selectedDate = $(this).val();
+                $.ajax({
+                    url: '{% url "search_by_date" %}', // Ensure this URL is correct
+                    method: 'GET',
+                    data: { 'search_date': selectedDate },
+                    success: function(response) {
+                        $('#results-table').html(response);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error:', error);
+                    }
+                });
+            });
+
+            // Auto-close alerts after 5 seconds
+            setTimeout(function() {
+                $('.alert').hide();
+            }, 5000);
+        });
+    </script>
+</head>
+<body>
+
+<div class="container">
+    {% if messages %}
+        <div>
+            {% for message in messages %}
+                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %}">
+                    <span class="close">&times;</span>
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <h2><a href="{% url 'add_interview' %}">Add Interview Details</a></h2>
+
+    <!-- Search Form -->
+    <div class="mb-4">
+        <label for="search-date">Select Date:</label>
+        <input type="date" id="search-date" name="search_date" class="form-control">
+        <a href="{% url 'with_hr' %}" class="discuss-hr-btn">Discuss with HR</a>
+    </div>
+
+    <!-- Header with Interview Data and Home button -->
+    <div class="header-row">
+        <h1>Interview Data</h1>
+        <a href="{% url 'home' %}" class="home-btn">Home Page</a>
+    </div>
+
+    <div id="results-table">
+        {% include 'partials/interview_table.html' %}
+    </div>
+</div>
+
+</body>
+</html>

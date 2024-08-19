@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Call with HR</title>
+</head>
+<body>
+<center>
+<h2>Call with HR</h2>
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label  class="text-info">HR Name:</label><br>
+            {{form.name}}
+        </div>
+
+        <div class="form-group">
+            <label  class="text-info">HR Number:</label><br>
+            {{form.mob}}
+        </div>
+
+        <div class="form-group">
+            <label  class="text-info">Company Name:</label><br>
+            {{form.compnay}}
+        </div>
+
+        <div class="form-group">
+            <label  class="text-info">Date:</label><br>
+            {{form.date}}
+        </div>
+
+        <div class="form-group">
+            <label  class="text-info">Call Info:</label><br>
+            {{form.description}}
+        </div>
+
+        <div class="form-group">
+            <input type="submit" name="submit" class="btn btn-info btn-md" value="submit">
+        </div>
+
+    </form>
+
+</center>
+</body>
+</html>
